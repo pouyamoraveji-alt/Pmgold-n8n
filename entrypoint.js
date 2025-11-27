@@ -6,20 +6,20 @@ const https = require('https');
 const intervalMs = 10 * 60 * 1000; // 10 minutes
 
 // Keepalive: if RENDER_EXTERNAL_URL exists, ping it every 10 minutes.
-const renderUrl = process.env.RENDER_EXTERNAL_URL ? `https://${process.env.RENDER_EXTERNAL_URL}` : null;
+const renderHost = process.env.RENDER_EXTERNAL_URL;
+const renderUrl = renderHost ? `https://${renderHost}` : null;
+
 if (renderUrl) {
-  console.log(`Keepalive is enabled. Pinging ${renderUrl} every ${intervalMs/1000}s`);
-  // initial ping immediately
+  console.log(`Keepalive is enabled. Pinging ${renderUrl} every ${intervalMs / 1000}s`);
   const ping = () => {
     try {
       const req = https.get(renderUrl, (res) => {
-        // drain response
+        // Drain response
         res.on('data', () => {});
         res.on('end', () => {});
       });
       req.on('error', (err) => {
-        // ignore errors
-        console.error('Keepalive ping error:', err.message);
+        console.error('Keepalive ping error:', err && err.message);
       });
       req.setTimeout(5000, () => {
         req.abort();
@@ -28,6 +28,7 @@ if (renderUrl) {
       console.error('Keepalive ping exception:', err && err.message);
     }
   };
+  // initial ping then regular interval
   ping();
   setInterval(ping, intervalMs);
 } else {
