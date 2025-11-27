@@ -1,3 +1,4 @@
+```yaml
 services:
   - type: web
     name: pmgold-n8n
@@ -17,3 +18,4 @@ services:
         value: 0.0.0.0
       - key: N8N_PORT
         value: 5678
+```
