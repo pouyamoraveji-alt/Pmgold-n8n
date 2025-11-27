@@ -1,0 +1,28 @@
+app = "pmgold-n8n"
+primary_region = "ams"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  N8N_PORT = "5678"
+  N8N_PROTOCOL = "https"
+  GENERIC_TIMEZONE = "Asia/Dubai"
+
+[[services]]
+  internal_port = 5678
+  processes = ["app"]
+
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
+
+  [[services.ports]]
+    port = 80
+    handlers = ["http"]
+
+[[services.tcp_checks]]
+  interval = "15s"
+  timeout = "2s"
+  grace_period = "5s"
+  restart_limit = 6
