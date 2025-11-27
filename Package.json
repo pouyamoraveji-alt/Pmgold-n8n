@@ -1,0 +1,9 @@
+{
+  "name": "pmgold-n8n",
+  "version": "1.0.0",
+  "description": "Custom n8n deployment with keep-alive for Render",
+  "scripts": {
+    "start": "n8n start"
+  },
+  "dependencies": {}
+}
